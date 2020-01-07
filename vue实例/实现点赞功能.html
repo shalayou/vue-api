@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="./lib/vue.js"></script>
+	<style>
+		.liked {
+    		background-color: pink;
+		}
+	</style>
+</head>
+<body>
+	<div id="app">
+    	<!-- 引用组件 -->
+    	<like></like>
+	</div>
+	<!-- 创建组件模板：id:like-component -->
+	<template id="like-component">
+    	<button @click="toggle_like" :class='{liked}'>?{{like_count}}</button>
+	</template>
+	<script>
+		
+		/* 注册vue组件 */
+		/* 
+			组件名：like
+			组件模板id: like-component
+ 		*/
+		Vue.component('like', {
+    		template: '#like-component',
+    		/* 利用函数return动态数据 */
+    		data: function(){
+        		return {
+            		/* 点赞数 */
+            		like_count: '0',
+            		/* 点赞状态 */
+            		liked: false
+        		}
+    		},
+    		created(){
+    			this.getCount()
+    		},
+    		methods: {
+        		/* 创建方法取反liked状态，动态渲染点赞数 */
+        		toggle_like(){
+            		if(!this.liked){
+               	 		this.like_count++;
+               	 		window.localStorage.setItem("count",this.like_count);
+               	 		this.liked = !this.liked;
+            		}else{
+                		alert("你已经点过赞了！！！")
+            		}
+            		
+        		},
+        		getCount(){
+    				if(window.localStorage.getItem("count")){
+    					this.like_count=window.localStorage.getItem("count");
+    				}else{
+    					this.like_count=window.localStorage.getItem("count");
+    					console.log(2)
+    				}
+    				console.log(this.like_count)
+    			}
+    		}
+		})
+		new Vue({
+    		el: '#app',
+    		data:{
+    		},
+    		methods:{
+    		}
+		})
+	</script>
+</body>
+</html>
